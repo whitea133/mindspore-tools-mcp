@@ -9,6 +9,9 @@ from mindspore_tools_mcp import prompt as prompt_module
 from mindspore_tools_mcp import resource as resource_module
 from mindspore_tools_mcp import tools
 
+from mindspore_tools_mcp import prompt as prompt_module
+from mindspore_tools_mcp import resource as resource_module
+from mindspore_tools_mcp import tools
 
 
 def register_module_functions(mcp: FastMCP, module) -> None:

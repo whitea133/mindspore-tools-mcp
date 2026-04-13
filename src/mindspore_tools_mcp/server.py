@@ -1,4 +1,4 @@
-"""MCP server for MindSpore model registry."""
+"""MCP server for MindSpore model registry and development tools."""
 
 from __future__ import annotations
 
@@ -9,6 +9,7 @@ from mcp.server.fastmcp import FastMCP
 from mindspore_tools_mcp import prompt as prompt_module
 from mindspore_tools_mcp import resource as resource_module
 from mindspore_tools_mcp import tools
+from mindspore_tools_mcp import msutils_tools  # 新增: msutils 工具封装
 
 
 def register_module_functions(mcp: FastMCP, module) -> None:
@@ -61,6 +62,10 @@ def create_server() -> FastMCP:
 
     # auto register tools from tools.py (e.g., list_models, get_model_info)
     register_module_functions(mcp, tools)
+    
+    # auto register msutils tools (AI安全、数据处理、训练工具等)
+    register_module_functions(mcp, msutils_tools)
+    
     # auto register resources and prompts
     register_module_resources(mcp, resource_module)
     register_module_prompts(mcp, prompt_module)
@@ -70,5 +75,7 @@ def create_server() -> FastMCP:
 
 if __name__ == "__main__":
     print("Starting MindSpore Models MCP server...")
+    print("  - Model registry tools: list_models, recommend_models, compare_models...")
+    print("  - msutils tools: generate_adversarial_attack, evaluate_model_robustness...")
     server = create_server()
     server.run(transport="stdio")

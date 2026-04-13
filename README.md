@@ -7,9 +7,9 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 ![MCP](https://img.shields.io/badge/MCP-Ready-purple?style=flat-square)
 
-**基于 MCP 的 MindSpore 模型与 API 映射工具包**
+**基于 MCP 的 MindSpore 开发工具套件**
 
-提供官方模型清单的标准化查询、智能模型推荐、以及 PyTorch → MindSpore API 映射与代码翻译辅助。
+提供官方模型清单查询、智能模型推荐、PyTorch→MindSpore API 映射、以及 **AI 安全、数据处理、训练工具** 等开发必备功能。
 
 [English](./README.md) | [中文](./README_CN.md)
 
@@ -25,7 +25,7 @@
 - `get_model_info` - 返回单模型详情
 - `mindspore://models/official` - 资源端点提供完整模型清单
 
-### 🤖 智能模型推荐 (NEW!)
+### 🤖 智能模型推荐
 
 - `recommend_models` - 根据自然语言描述智能推荐合适的模型
   - 支持任务描述: "图像分类"、"文本生成"、"OCR"、"推荐系统" 等
@@ -38,6 +38,38 @@
 - `query_op_mapping` - 支持 section 过滤与模糊匹配
 - `diagnose_translation` - 检查 PyTorch→MindSpore 代码翻译是否完整
 - `mindspore://opmap/...` - 资源暴露 PyTorch→MindSpore API 映射
+
+### 🛡️ AI 安全工具 (NEW!)
+
+- `generate_adversarial_attack` - 生成对抗攻击配置和示例代码
+  - 支持: FGSM、PGD、DeepFool、CW、JSMA
+- `evaluate_model_robustness` - 评估模型鲁棒性配置
+
+### 📊 数据处理工具 (NEW!)
+
+- `create_data_augmentation_pipeline` - 创建数据增强流水线
+  - 支持: 图像分类、目标检测、语义分割、NLP
+
+### 🔧 训练工具 (NEW!)
+
+- `get_lr_scheduler` - 获取学习率调度器配置
+  - 支持: 余弦退火、阶梯衰减、多项式衰减、One Cycle
+- `get_training_callbacks` - 获取训练回调函数配置
+  - 支持: 检查点保存、早停、TensorBoard、梯度裁剪
+
+### 📈 分析工具 (NEW!)
+
+- `compute_model_complexity` - 计算模型 FLOPs、参数量、内存占用
+
+### 🌐 分布式训练 (NEW!)
+
+- `setup_distributed_training` - 配置分布式训练
+
+### 🚀 部署工具 (NEW!)
+
+- `quantize_model` - 模型量化配置
+  - 支持: 动态量化、静态量化、量化感知训练
+- `convert_model_format` - 模型格式转换配置
 
 ### 📊 数据脚本
 
@@ -63,7 +95,17 @@ mindspore-tools-mcp/
 ├── src/
 │   └── mindspore_tools_mcp/           # MCP 服务
 │       ├── server.py                  # MCP 入口
-│       ├── tools.py                   # 工具定义
+│       ├── tools.py                   # 模型检索工具
+│       ├── msutils_tools.py           # 🆕 msutils MCP 工具封装
+│       ├── msutils/                   # 🆕 MindSpore 开发工具库
+│       │   ├── data/                  # 数据处理
+│       │   ├── train/                 # 训练工具
+│       │   ├── security/              # AI 安全
+│       │   ├── eval/                  # 评估指标
+│       │   ├── nlp/                   # NLP 工具
+│       │   ├── distributed/           # 分布式训练
+│       │   ├── deploy/                # 部署工具
+│       │   └── analysis/              # 分析可视化
 │       ├── resource.py                # 资源定义
 │       └── prompt.py                  # Prompt 注册
 │
@@ -112,7 +154,7 @@ uv run python -m mindspore_tools_mcp.server
 
 ## 📖 API 参考
 
-### 工具列表
+### 模型检索工具
 
 | 工具名 | 说明 | 示例 |
 |--------|------|------|
@@ -122,6 +164,45 @@ uv run python -m mindspore_tools_mcp.server
 | `compare_models` | 对比模型 | `compare_models(["resnet50", "vit"])` |
 | `query_op_mapping` | 查询 API 映射 | `query_op_mapping("torch.add")` |
 | `diagnose_translation` | 诊断代码翻译 | `diagnose_translation(py_code, ms_code)` |
+
+### AI 安全工具 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `generate_adversarial_attack` | 生成对抗攻击配置 | `generate_adversarial_attack("fgsm", epsilon=0.1)` |
+| `evaluate_model_robustness` | 评估模型鲁棒性 | `evaluate_model_robustness(model_config)` |
+
+### 数据处理工具 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `create_data_augmentation_pipeline` | 创建数据增强流水线 | `create_data_augmentation_pipeline("image_classification")` |
+
+### 训练工具 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `get_lr_scheduler` | 获取学习率调度器 | `get_lr_scheduler("cosine_annealing", total_epochs=100)` |
+| `get_training_callbacks` | 获取训练回调配置 | `get_training_callbacks(["checkpoint", "early_stopping"])` |
+
+### 分析工具 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `compute_model_complexity` | 计算模型复杂度 | `compute_model_complexity("resnet50")` |
+
+### 分布式训练 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `setup_distributed_training` | 配置分布式训练 | `setup_distributed_training(num_gpus=8)` |
+
+### 部署工具 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `quantize_model` | 模型量化配置 | `quantize_model("dynamic", precision="int8")` |
+| `convert_model_format` | 模型格式转换 | `convert_model_format("pytorch", "mindspore")` |
 
 ### 资源列表
 
@@ -161,21 +242,73 @@ recommend_models("OCR文字识别", limit=5)
 # 返回: dbnet_resnet18, dbnet_resnet50, ...
 ```
 
-### 模型对比
+### AI 安全对抗攻击 🆕
 
 ```python
-# 对比多个图像分类模型
-compare_models(["resnet50", "vit", "swin_transformer"])
-# 返回: 任务对比、性能对比、选择建议
+# 生成 FGSM 攻击配置
+generate_adversarial_attack("fgsm", epsilon=0.1)
+# 返回: 攻击配置 + MindSpore 示例代码
+
+# 生成 PGD 攻击配置
+generate_adversarial_attack("pgd", epsilon=0.3, num_iterations=40)
+# 返回: 迭代攻击配置 + 代码示例
 ```
 
-### API 映射查询
+### 数据增强流水线 🆕
 
 ```python
-# 查询 PyTorch API 映射
-query_op_mapping("torch.addmm")
-# 返回: consistent/diff 映射列表
+# 创建图像分类增强流水线
+create_data_augmentation_pipeline("image_classification")
+# 返回: 增强方法列表 + MindSpore Dataset 代码
+
+# 创建 NLP 数据增强
+create_data_augmentation_pipeline("nlp", augmentations=["RandomDelete", "SynonymReplace"])
 ```
+
+### 学习率调度 🆕
+
+```python
+# 余弦退火调度
+get_lr_scheduler("cosine_annealing", total_epochs=100, warmup_epochs=5)
+# 返回: 调度器配置 + 学习率曲线 + MindSpore 代码
+```
+
+### 模型复杂度分析 🆕
+
+```python
+# 分析 ResNet50 复杂度
+compute_model_complexity("resnet50")
+# 返回: FLOPs=4.12G, Params=25.6M, Memory=98MB
+```
+
+### 模型量化 🆕
+
+```python
+# 动态量化配置
+quantize_model("dynamic", precision="int8")
+# 返回: 量化配置 + MindSpore 代码 + 预期加速比
+
+# 静态量化配置
+quantize_model("static", precision="int8", calibration_dataset_size=100)
+```
+
+---
+
+## 📊 msutils 模块说明
+
+`msutils` 是集成在项目中的 MindSpore 开发工具库，包含以下模块：
+
+| 模块 | 功能 | 文件数 | 代码行数 |
+|------|------|--------|---------|
+| `data/` | 数据增强、加载器、变换 | 4 | 1,173 |
+| `train/` | 回调函数、学习率调度器 | 3 | 976 |
+| `security/` | 对抗攻击、防御、鲁棒性评估 | 4 | 855 |
+| `eval/` | 评估指标 | 2 | 516 |
+| `nlp/` | 文本增强、分词器 | 3 | 849 |
+| `distributed/` | DDP 工具 | 2 | 398 |
+| `deploy/` | 模型转换、量化 | 3 | 315 |
+| `analysis/` | 复杂度分析、可视化 | 3 | 454 |
+| **总计** | | **25** | **5,664** |
 
 ---
 

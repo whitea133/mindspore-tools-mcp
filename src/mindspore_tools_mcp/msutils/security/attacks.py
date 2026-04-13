@@ -101,8 +101,8 @@ class FGSM(Attack):
     
     def _compute_loss(self, output, labels):
         """计算交叉熵损失"""
-        from mindspore.nn import CrossEntropyWithSoftmax
-        criterion = CrossEntropyWithSoftmax(sparse=True)
+        from mindspore.nn import SoftmaxCrossEntropyWithLogits
+        criterion = SoftmaxCrossEntropyWithLogits(sparse=True)
         return criterion(output, labels)
 
 

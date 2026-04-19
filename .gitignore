@@ -8,6 +8,9 @@ wheels/
 AGENTS.md
 .ruff_cache/
 
+#data
+/data/cifar10/
+
 #src
 
 # Virtual environments

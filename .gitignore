@@ -19,3 +19,7 @@ AGENTS.md
 # root directory
 /.pytest_cache/
 /AGENTS.md
+
+#debug
+/current_run/
+/rank_0

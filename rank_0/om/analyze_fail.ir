@@ -1,0 +1,663 @@
+# ===============================================================================================
+# The following shows the last analyze fail log message.
+# ===============================================================================================
+
+----------------------------------------------------
+- Caught exception:
+----------------------------------------------------
+For 'MatMul' the input dimensions must be equal, but got 'x1_col': 100352 and 'x2_row': 2048.
+
+----------------------------------------------------
+- C++ Call Stack: (For framework developers)
+----------------------------------------------------
+mindspore/ops/infer/ops_func_impl//matmul.cc:78 mindspore::ops::MatMulFuncImpl::InferShape2D
+
+----------------------------------------------------
+- The Traceback of Net Construct Code:
+----------------------------------------------------
+# 0 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55
+        if self.add_cast_fp32:
+# 1 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:791, 18~37
+        outputs = self._network(data)
+                  ^~~~~~~~~~~~~~~~~~~
+# 2 In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~27
+            x = self.fc1(x)
+                ^~~~~~~~~~~
+# 3 In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~24
+            x = self.fc1(x)
+                ^~~~~~~~
+# 4 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:795~796, 8~43
+        if self.has_bias:
+# 5 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 12~43
+            x = self.bias_add(x, self.bias)
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# 6 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:797~798, 8~34
+        if self.activation_flag:
+# 7 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42
+        if len(x_shape) != 2:
+# 8 In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:794, 12~39
+        x = self.matmul(x, self.weight)
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# ===============================================================================================
+# The following shows the IR when the function graphs evaluation fails to help locate the problem.
+# You can search the last ------------------------> to the node which is evaluated failure.
+# Refer to https://www.mindspore.cn/search?inputValue=analyze_fail.ir to get more instructions.
+# ===============================================================================================
+
+# IR entry: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181
+# Total subgraphs: 0
+
+# Attrs:
+training: 0
+compile_phase: eval.1776100403803929600.1771749576432.0...0
+
+# Total params: 18
+# Params:
+%para1_data: <null>
+%para2_label: <null>
+%para3_conv1.weight: <Ref[Tensor[Float32]], (32, 3, 3, 3), ref_key=conv1.weight, is_parameter>  :  has_default
+%para4_bn1.gamma: <Ref[Tensor[Float32]], (32), ref_key=bn1.gamma, is_parameter>  :  has_default
+%para5_bn1.beta: <Ref[Tensor[Float32]], (32), ref_key=bn1.beta, is_parameter>  :  has_default
+%para6_bn1.moving_mean: <Ref[Tensor[Float32]], (32), ref_key=bn1.moving_mean, is_parameter>  :  has_default
+%para7_bn1.moving_variance: <Ref[Tensor[Float32]], (32), ref_key=bn1.moving_variance, is_parameter>  :  has_default
+%para8_conv2.weight: <Ref[Tensor[Float32]], (64, 32, 3, 3), ref_key=conv2.weight, is_parameter>  :  has_default
+%para9_bn2.gamma: <Ref[Tensor[Float32]], (64), ref_key=bn2.gamma, is_parameter>  :  has_default
+%para10_bn2.beta: <Ref[Tensor[Float32]], (64), ref_key=bn2.beta, is_parameter>  :  has_default
+%para11_bn2.moving_mean: <Ref[Tensor[Float32]], (64), ref_key=bn2.moving_mean, is_parameter>  :  has_default
+%para12_bn2.moving_variance: <Ref[Tensor[Float32]], (64), ref_key=bn2.moving_variance, is_parameter>  :  has_default
+%para13_conv3.weight: <Ref[Tensor[Float32]], (128, 64, 3, 3), ref_key=conv3.weight, is_parameter>  :  has_default
+%para14_bn3.gamma: <Ref[Tensor[Float32]], (128), ref_key=bn3.gamma, is_parameter>  :  has_default
+%para15_bn3.beta: <Ref[Tensor[Float32]], (128), ref_key=bn3.beta, is_parameter>  :  has_default
+%para16_bn3.moving_mean: <Ref[Tensor[Float32]], (128), ref_key=bn3.moving_mean, is_parameter>  :  has_default
+%para17_bn3.moving_variance: <Ref[Tensor[Float32]], (128), ref_key=bn3.moving_variance, is_parameter>  :  has_default
+%para18_fc1.weight: <Ref[Tensor[Float32]], (256, 2048), ref_key=fc1.weight, is_parameter>  :  has_default
+
+subgraph attr:
+training: 0
+compile_phase: eval.1776100403803929600.1771749576432.0...0
+subgraph instance: mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181 : 0000019CA4FB8A10
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:790~796, 4~35/    def construct(self, data, label):/
+subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181() {
+  %0(CNode_192) = resolve(NameSpace[Entry: 'mindspore.nn.wrap.cell_wrapper.WithEvalCell.construct'], mindspore.nn.wrap.cell_wrapper.WithEvalCell.construct)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default)
+
+#------------------------> 0
+  %1(CNode_193) = %0(%para1_data, %para2_label)
+      : (<Tensor[Float32], (32, 3, 224, 224)>, <Tensor[Int32], (32)>) -> (<null>)
+      #scope: (Default)
+  Return(%1)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55/        if self.add_cast_fp32:/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_192{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> Entry: 'mindspore.nn.wrap.cell_wrapper.WithEvalCell.construct', [2]: ValueNode<Symbol> mindspore.nn.wrap.cell_wrapper.WithEvalCell.construct}
+#   2: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_193{[0]: CNode_192, [1]: param_data, [2]: param_label}
+#   3: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_194{[0]: ValueNode<Primitive> Return, [1]: CNode_193}
+
+
+subgraph attr:
+training: 0
+compile_phase: eval.1776100403803929600.1771749576432.0...0
+subgraph instance: mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181 : 0000019CA4FBAB70
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:790~796, 4~35/    def construct(self, data, label):/
+subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181(%para0_data, %para0_label) {
+
+#------------------------> 1
+  %0(CNode_195) = call @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55/        if self.add_cast_fp32:/
+  Return(%0)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55/        if self.add_cast_fp32:/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_196{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.wrap.cell_wrapper..<WithEvalCell::1771749576432>', [2]: ValueNode<Symbol> _network}
+#   2: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_197{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:outputs{[0]: CNode_196, [1]: param_data}
+#   5: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_195{[0]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182}
+#   6: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:CNode_194{[0]: ValueNode<Primitive> Return, [1]: CNode_195}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182 : 0000019CA4FB9530
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:790~796, 4~35/    def construct(self, data, label):/
+subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181]() {
+
+#------------------------> 2
+  %0(CNode_198) = call @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183()
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55/        if self.add_cast_fp32:/
+  Return(%0)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:792~794, 8~55/        if self.add_cast_fp32:/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182:CNode_198{[0]: ValueNode<FuncGraph> mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183}
+#   2: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_182:CNode_199{[0]: ValueNode<Primitive> Return, [1]: CNode_198}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183 : 0000019CA4FBB100
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:790~796, 4~35/    def construct(self, data, label):/
+subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183 parent: [subgraph @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181]() {
+  %0(CNode_200) = resolve(NameSpace[CommonOPS: 'Namespace:mindspore._extends.parse.trope'], MakeTuple)
+      : (<External, NoShape>, <External, NoShape>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:796, 15~35/        return loss, outputs, label/
+  %1(CNode_201) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.wrap.cell_wrapper..<WithEvalCell::1771749576432>'], _loss_fn)
+      : (<External, NoShape>, <External, NoShape>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:795, 15~28/        loss = self._loss_fn(outputs, label)/
+  %2(CNode_196) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.wrap.cell_wrapper..<WithEvalCell::1771749576432>'], _network)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:791, 18~31/        outputs = self._network(data)/
+
+#------------------------> 3
+  %3(outputs) = %2(%para0_data)
+      : (<Tensor[Float32], (32, 3, 224, 224)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:791, 18~37/        outputs = self._network(data)/
+  %4(loss) = %1(%3, $(@mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:para0_label))
+      : (<null>, <Tensor[Int32], (32)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:795, 15~44/        loss = self._loss_fn(outputs, label)/
+  %5(CNode_202) = %0(%4, %3, $(@mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_181:para0_label))
+      : (<null>, <null>, <Tensor[Int32], (32)>) -> (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:796, 15~35/        return loss, outputs, label/
+  Return(%5)
+      : (<null>)
+      #scope: (Default)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\wrap\cell_wrapper.py:796, 8~35/        return loss, outputs, label/
+}
+# Order:
+#   1: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:CNode_201{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.wrap.cell_wrapper..<WithEvalCell::1771749576432>', [2]: ValueNode<Symbol> _loss_fn}
+#   2: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:CNode_203{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:loss{[0]: CNode_201, [1]: outputs, [2]: param_label}
+#   5: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:CNode_200{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   6: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:CNode_202{[0]: CNode_200, [1]: loss, [2]: outputs, [3]: param_label}
+#   7: @mindspore_nn_wrap_cell_wrapper_WithEvalCell_construct_183:CNode_204{[0]: ValueNode<Primitive> Return, [1]: CNode_202}
+
+
+subgraph attr:
+training: 0
+subgraph instance: __main___create_simple_cnn__locals__SimpleCNN_construct_184 : 0000019CA4FBA5E0
+# In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:251~273, 8~20/        def construct(self, x):/
+subgraph @__main___create_simple_cnn__locals__SimpleCNN_construct_184(%para0_x) {
+  %0(CNode_205) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], fc2)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:271, 16~24/            x = self.fc2(x)/
+  %1(CNode_206) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], dropout)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:270, 16~28/            x = self.dropout(x)/
+  %2(CNode_207) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], relu1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:269, 16~26/            x = self.relu1(x)/
+  %3(CNode_208) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], fc1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~24/            x = self.fc1(x)/
+  %4(CNode_209) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], flatten)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:267, 16~28/            x = self.flatten(x)/
+  %5(CNode_210) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], pool3)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:265, 16~26/            x = self.pool3(x)/
+  %6(CNode_211) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], relu3)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:264, 16~26/            x = self.relu3(x)/
+  %7(CNode_212) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], bn3)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:263, 16~24/            x = self.bn3(x)/
+  %8(CNode_213) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], conv3)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:262, 16~26/            x = self.conv3(x)/
+  %9(CNode_214) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], pool2)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:260, 16~26/            x = self.pool2(x)/
+  %10(CNode_215) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], relu2)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:259, 16~26/            x = self.relu2(x)/
+  %11(CNode_216) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], bn2)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:258, 16~24/            x = self.bn2(x)/
+  %12(CNode_217) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], conv2)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:257, 16~26/            x = self.conv2(x)/
+  %13(CNode_218) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], pool1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:255, 16~26/            x = self.pool1(x)/
+  %14(CNode_219) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], relu1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:254, 16~26/            x = self.relu1(x)/
+  %15(CNode_220) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], bn1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:253, 16~24/            x = self.bn1(x)/
+  %16(CNode_221) = resolve(NameSpace[ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>'], conv1)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:252, 16~26/            x = self.conv1(x)/
+  %17(x) = %16(%para0_x)
+      : (<Tensor[Float32], (32, 3, 224, 224)>) -> (<Tensor[Float32], (32, 32, 224, 224)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:252, 16~29/            x = self.conv1(x)/
+  %18(x) = %15(%17)
+      : (<Tensor[Float32], (32, 32, 224, 224)>) -> (<Tensor[Float32], (32, 32, 224, 224)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:253, 16~27/            x = self.bn1(x)/
+  %19(x) = %14(%18)
+      : (<Tensor[Float32], (32, 32, 224, 224)>) -> (<Tensor[Float32], (32, 32, 224, 224)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:254, 16~29/            x = self.relu1(x)/
+  %20(x) = %13(%19)
+      : (<Tensor[Float32], (32, 32, 224, 224)>) -> (<Tensor[Float32], (32, 32, 112, 112)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:255, 16~29/            x = self.pool1(x)/
+  %21(x) = %12(%20)
+      : (<Tensor[Float32], (32, 32, 112, 112)>) -> (<Tensor[Float32], (32, 64, 112, 112)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:257, 16~29/            x = self.conv2(x)/
+  %22(x) = %11(%21)
+      : (<Tensor[Float32], (32, 64, 112, 112)>) -> (<Tensor[Float32], (32, 64, 112, 112)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:258, 16~27/            x = self.bn2(x)/
+  %23(x) = %10(%22)
+      : (<Tensor[Float32], (32, 64, 112, 112)>) -> (<Tensor[Float32], (32, 64, 112, 112)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:259, 16~29/            x = self.relu2(x)/
+  %24(x) = %9(%23)
+      : (<Tensor[Float32], (32, 64, 112, 112)>) -> (<Tensor[Float32], (32, 64, 56, 56)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:260, 16~29/            x = self.pool2(x)/
+  %25(x) = %8(%24)
+      : (<Tensor[Float32], (32, 64, 56, 56)>) -> (<Tensor[Float32], (32, 128, 56, 56)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:262, 16~29/            x = self.conv3(x)/
+  %26(x) = %7(%25)
+      : (<Tensor[Float32], (32, 128, 56, 56)>) -> (<Tensor[Float32], (32, 128, 56, 56)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:263, 16~27/            x = self.bn3(x)/
+  %27(x) = %6(%26)
+      : (<Tensor[Float32], (32, 128, 56, 56)>) -> (<Tensor[Float32], (32, 128, 56, 56)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:264, 16~29/            x = self.relu3(x)/
+  %28(x) = %5(%27)
+      : (<Tensor[Float32], (32, 128, 56, 56)>) -> (<Tensor[Float32], (32, 128, 28, 28)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:265, 16~29/            x = self.pool3(x)/
+  %29(x) = %4(%28)
+      : (<Tensor[Float32], (32, 128, 28, 28)>) -> (<Tensor[Float32], (32, 100352)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:267, 16~31/            x = self.flatten(x)/
+
+#------------------------> 4
+  %30(x) = %3(%29)
+      : (<Tensor[Float32], (32, 100352)>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~27/            x = self.fc1(x)/
+  %31(x) = %2(%30)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:269, 16~29/            x = self.relu1(x)/
+  %32(x) = %1(%31)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:270, 16~31/            x = self.dropout(x)/
+  %33(x) = %0(%32)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:271, 16~27/            x = self.fc2(x)/
+  Return(%33)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:273, 12~20/            return x/
+}
+# Order:
+#   1: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_221{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> conv1}
+#   2: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_222{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_221, [1]: param_x}
+#   5: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_220{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> bn1}
+#   6: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_223{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   8: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_220, [1]: x}
+#   9: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_219{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> relu1}
+#  10: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_224{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  12: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_219, [1]: x}
+#  13: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_218{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> pool1}
+#  14: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_225{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  16: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_218, [1]: x}
+#  17: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_217{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> conv2}
+#  18: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_226{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  20: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_217, [1]: x}
+#  21: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_216{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> bn2}
+#  22: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_227{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  24: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_216, [1]: x}
+#  25: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_215{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> relu2}
+#  26: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_228{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  28: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_215, [1]: x}
+#  29: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_214{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> pool2}
+#  30: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_229{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  32: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_214, [1]: x}
+#  33: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_213{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> conv3}
+#  34: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_230{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  36: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_213, [1]: x}
+#  37: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_212{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> bn3}
+#  38: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_231{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  40: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_212, [1]: x}
+#  41: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_211{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> relu3}
+#  42: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_232{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  44: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_211, [1]: x}
+#  45: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_210{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> pool3}
+#  46: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_233{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  48: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_210, [1]: x}
+#  49: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_209{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> flatten}
+#  50: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_234{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  52: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_209, [1]: x}
+#  53: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_208{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> fc1}
+#  54: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_235{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  56: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_208, [1]: x}
+#  57: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_207{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> relu1}
+#  58: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_236{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  60: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_207, [1]: x}
+#  61: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_206{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> dropout}
+#  62: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_237{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  64: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_206, [1]: x}
+#  65: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_205{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:__main__..<SimpleCNN::1771748529696>', [2]: ValueNode<Symbol> fc2}
+#  66: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_238{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#  68: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:x{[0]: CNode_205, [1]: x}
+#  69: @__main___create_simple_cnn__locals__SimpleCNN_construct_184:CNode_239{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_185 : 0000019CA4FBDD80
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_185(%para0_x) {
+  %0(CNode_240) = resolve(NameSpace[Ast: 'Namespace:mindspore._extends.parse.trope'], ne)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792, 11~28/        if len(x_shape) != 2:/
+  %1(CNode_241) = resolve(NameSpace[SymbolStr: 'Namespace:mindspore.nn.layer.basic'], len)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792, 11~14/        if len(x_shape) != 2:/
+  %2(CNode_242) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], shape_op)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:791, 18~31/        x_shape = self.shape_op(x)/
+  %3(x_shape) = %2(%para0_x)
+      : (<Tensor[Float32], (32, 100352)>) -> (<Tuple[Int64*2], TupleShape(NoShape, NoShape)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:791, 18~34/        x_shape = self.shape_op(x)/
+  %4(CNode_243) = %1(%3)
+      : (<Tuple[Int64*2], TupleShape(NoShape, NoShape)>) -> (<Int64, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792, 11~23/        if len(x_shape) != 2:/
+  %5(CNode_244) = %0(%4, I64(2))
+      : (<Int64, NoShape>, <Int64, NoShape>) -> (<Bool, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792, 11~28/        if len(x_shape) != 2:/
+  %6(CNode_245) = Cond(%5, Bool(0))
+      : (<Bool, NoShape>, <Bool, NoShape>) -> (<Bool, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792~793, 8~50/        if len(x_shape) != 2:/
+  %7(CNode_246) = Switch(%6, @mindspore_nn_layer_basic_Dense_construct_247, @mindspore_nn_layer_basic_Dense_construct_248)
+      : (<Bool, NoShape>, <Func, NoShape>, <Func, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792~793, 8~50/        if len(x_shape) != 2:/
+  %8(CNode_249) = %7()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792~793, 8~50/        if len(x_shape) != 2:/
+
+#------------------------> 5
+  %9(CNode_250) = call @mindspore_nn_layer_basic_Dense_construct_186(%8)
+      : (<Tensor[Float32], (32, 100352)>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~24/            x = self.fc1(x)/
+  Return(%9)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792~793, 8~50/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_185:CNode_242{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>', [2]: ValueNode<Symbol> shape_op}
+#   2: @mindspore_nn_layer_basic_Dense_construct_185:CNode_251{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @mindspore_nn_layer_basic_Dense_construct_185:x_shape{[0]: CNode_242, [1]: param_x}
+#   5: @mindspore_nn_layer_basic_Dense_construct_185:CNode_241{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> SymbolStr: 'Namespace:mindspore.nn.layer.basic', [2]: ValueNode<Symbol> len}
+#   6: @mindspore_nn_layer_basic_Dense_construct_185:CNode_252{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   8: @mindspore_nn_layer_basic_Dense_construct_185:CNode_243{[0]: CNode_241, [1]: x_shape}
+#   9: @mindspore_nn_layer_basic_Dense_construct_185:CNode_240{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> Ast: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> ne}
+#  10: @mindspore_nn_layer_basic_Dense_construct_185:CNode_244{[0]: CNode_240, [1]: CNode_243, [2]: ValueNode<Int64Imm> 2}
+#  11: @mindspore_nn_layer_basic_Dense_construct_185:CNode_245{[0]: ValueNode<Primitive> Cond, [1]: CNode_244, [2]: ValueNode<BoolImm> false}
+#  12: @mindspore_nn_layer_basic_Dense_construct_185:CNode_246{[0]: ValueNode<Primitive> Switch, [1]: CNode_245, [2]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_247, [3]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_248}
+#  13: @mindspore_nn_layer_basic_Dense_construct_185:CNode_249{[0]: CNode_246}
+#  14: @mindspore_nn_layer_basic_Dense_construct_185:CNode_250{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_186, [1]: CNode_249}
+#  15: @mindspore_nn_layer_basic_Dense_construct_185:CNode_253{[0]: ValueNode<Primitive> Return, [1]: CNode_250}
+#  16: @mindspore_nn_layer_basic_Dense_construct_185:CNode_254{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>', [2]: ValueNode<Symbol> weight}
+#  17: @mindspore_nn_layer_basic_Dense_construct_185:CNode_255{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>', [2]: ValueNode<Symbol> bias}
+#  18: @mindspore_nn_layer_basic_Dense_construct_185:CNode_256{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> SymbolStr: 'Namespace:mindspore.nn.layer.basic', [2]: ValueNode<Symbol> ops}
+
+
+subgraph attr:
+after_block: 1
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_186 : 0000019CA4FC1520
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_186 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_185](%para0_phi_x) {
+
+#------------------------> 6
+  %0(CNode_257) = call @mindspore_nn_layer_basic_Dense_construct_187()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:795~796, 8~43/        if self.has_bias:/
+  Return(%0)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:795~796, 8~43/        if self.has_bias:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_186:CNode_258{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>', [2]: ValueNode<Symbol> matmul}
+#   3: @mindspore_nn_layer_basic_Dense_construct_186:CNode_259{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   5: @mindspore_nn_layer_basic_Dense_construct_186:x{[0]: CNode_258, [1]: param_phi_x, [2]: CNode_254}
+#   6: @mindspore_nn_layer_basic_Dense_construct_186:CNode_257{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_187}
+#   7: @mindspore_nn_layer_basic_Dense_construct_186:CNode_260{[0]: ValueNode<Primitive> Return, [1]: CNode_257}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_187 : 0000019CA4FA41E0
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_187 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_186]() {
+
+#------------------------> 7
+  %0(CNode_261) = call @mindspore_nn_layer_basic_Dense_construct_188()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 12~43/            x = self.bias_add(x, self.bias)/
+  Return(%0)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 12~43/            x = self.bias_add(x, self.bias)/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_187:CNode_262{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>', [2]: ValueNode<Symbol> bias_add}
+#   2: @mindspore_nn_layer_basic_Dense_construct_187:CNode_263{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   4: @mindspore_nn_layer_basic_Dense_construct_187:x{[0]: CNode_262, [1]: x, [2]: CNode_255}
+#   5: @mindspore_nn_layer_basic_Dense_construct_187:CNode_261{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_188}
+#   6: @mindspore_nn_layer_basic_Dense_construct_187:CNode_264{[0]: ValueNode<Primitive> Return, [1]: CNode_261}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_188 : 0000019CA4FA3C50
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_188 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_187]() {
+
+#------------------------> 8
+  %0(CNode_265) = call @mindspore_nn_layer_basic_Dense_construct_189()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:797~798, 8~34/        if self.activation_flag:/
+  Return(%0)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:797~798, 8~34/        if self.activation_flag:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_188:CNode_265{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_189}
+#   2: @mindspore_nn_layer_basic_Dense_construct_188:CNode_266{[0]: ValueNode<Primitive> Return, [1]: CNode_265}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_189 : 0000019CA4FA4770
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_189 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_187]() {
+
+#------------------------> 9
+  %0(CNode_267) = call @mindspore_nn_layer_basic_Dense_construct_190()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:797~798, 8~34/        if self.activation_flag:/
+  Return(%0)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:797~798, 8~34/        if self.activation_flag:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_189:CNode_267{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_190}
+#   2: @mindspore_nn_layer_basic_Dense_construct_189:CNode_268{[0]: ValueNode<Primitive> Return, [1]: CNode_267}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_190 : 0000019CA4FA2BA0
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_190 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_187]() {
+  %0(CNode_269) = resolve(NameSpace[Ast: 'Namespace:mindspore._extends.parse.trope'], ne)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799, 11~28/        if len(x_shape) != 2:/
+  %1(CNode_241) = resolve(NameSpace[SymbolStr: 'Namespace:mindspore.nn.layer.basic'], len)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:792, 11~14/        if len(x_shape) != 2:/
+  %2(CNode_242) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], shape_op)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:791, 18~31/        x_shape = self.shape_op(x)/
+  %3(x_shape) = %2(%para0_x)
+      : (<Tensor[Float32], (32, 100352)>) -> (<Tuple[Int64*2], TupleShape(NoShape, NoShape)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:791, 18~34/        x_shape = self.shape_op(x)/
+  %4(CNode_270) = %1(%3)
+      : (<Tuple[Int64*2], TupleShape(NoShape, NoShape)>) -> (<Int64, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799, 11~23/        if len(x_shape) != 2:/
+  %5(CNode_271) = %0(%4, I64(2))
+      : (<Int64, NoShape>, <Int64, NoShape>) -> (<Bool, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799, 11~28/        if len(x_shape) != 2:/
+  %6(CNode_272) = Cond(%5, Bool(0))
+      : (<Bool, NoShape>, <Bool, NoShape>) -> (<Bool, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42/        if len(x_shape) != 2:/
+  %7(CNode_273) = Switch(%6, @mindspore_nn_layer_basic_Dense_construct_274, @mindspore_nn_layer_basic_Dense_construct_191)
+      : (<Bool, NoShape>, <Func, NoShape>, <Func, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42/        if len(x_shape) != 2:/
+
+#------------------------> 10
+  %8(CNode_275) = %7()
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42/        if len(x_shape) != 2:/
+  %9(CNode_276) = call @mindspore_nn_layer_basic_Dense_construct_277(%8)
+      : (<null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN)
+      # In file E:\CodeProject\mindspore-tools-mcp\examples\resnet50_example\train.py:268, 16~24/            x = self.fc1(x)/
+  Return(%9)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_190:CNode_278{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> CommonOPS: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> MakeTuple}
+#   3: @mindspore_nn_layer_basic_Dense_construct_190:CNode_270{[0]: CNode_241, [1]: x_shape}
+#   4: @mindspore_nn_layer_basic_Dense_construct_190:CNode_269{[0]: ValueNode<Primitive> resolve, [1]: ValueNode<NameSpace> Ast: 'Namespace:mindspore._extends.parse.trope', [2]: ValueNode<Symbol> ne}
+#   5: @mindspore_nn_layer_basic_Dense_construct_190:CNode_271{[0]: CNode_269, [1]: CNode_270, [2]: ValueNode<Int64Imm> 2}
+#   6: @mindspore_nn_layer_basic_Dense_construct_190:CNode_272{[0]: ValueNode<Primitive> Cond, [1]: CNode_271, [2]: ValueNode<BoolImm> false}
+#   7: @mindspore_nn_layer_basic_Dense_construct_190:CNode_273{[0]: ValueNode<Primitive> Switch, [1]: CNode_272, [2]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_274, [3]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_191}
+#   8: @mindspore_nn_layer_basic_Dense_construct_190:CNode_275{[0]: CNode_273}
+#   9: @mindspore_nn_layer_basic_Dense_construct_190:CNode_276{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_277, [1]: CNode_275}
+#  10: @mindspore_nn_layer_basic_Dense_construct_190:CNode_279{[0]: ValueNode<Primitive> Return, [1]: CNode_276}
+
+
+subgraph attr:
+training: 0
+subgraph instance: mindspore_nn_layer_basic_Dense_construct_191 : 0000019CA4FA5820
+# In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:790~802, 4~16/    def construct(self, x):/
+subgraph @mindspore_nn_layer_basic_Dense_construct_191 parent: [subgraph @mindspore_nn_layer_basic_Dense_construct_187]() {
+  %0(CNode_262) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], bias_add)
+      : (<External, NoShape>, <External, NoShape>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 16~29/            x = self.bias_add(x, self.bias)/
+  %1(CNode_258) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], matmul)
+      : (<External, NoShape>, <External, NoShape>) -> (<Func, NoShape>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:794, 12~23/        x = self.matmul(x, self.weight)/
+  %2(CNode_254) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], weight)
+      : (<External, NoShape>, <External, NoShape>) -> (<Ref[Tensor[Float32]], (256, 2048)>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:794, 27~38/        x = self.matmul(x, self.weight)/
+
+#------------------------> 11
+  %3(x) = %1(%para0_phi_x, %2)
+      : (<Tensor[Float32], (32, 100352)>, <Ref[Tensor[Float32]], (256, 2048)>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:794, 12~39/        x = self.matmul(x, self.weight)/
+  %4(CNode_255) = resolve(NameSpace[ClassMember: 'Namespace:mindspore.nn.layer.basic..<Dense::1771751480896>'], bias)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 33~42/            x = self.bias_add(x, self.bias)/
+  %5(x) = %0(%3, %4)
+      : (<null>, <null>) -> (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:796, 16~43/            x = self.bias_add(x, self.bias)/
+  Return(%5)
+      : (<null>)
+      #scope: (Default/network-WithLossCell/_backbone-SimpleCNN/fc1-Dense)
+      # In file D:\Anaconda\envs\deepTrain\lib\site-packages\mindspore\nn\layer\basic.py:799~801, 8~42/        if len(x_shape) != 2:/
+}
+# Order:
+#   1: @mindspore_nn_layer_basic_Dense_construct_191:CNode_280{[0]: ValueNode<FuncGraph> mindspore_nn_layer_basic_Dense_construct_277, [1]: x}
+#   2: @mindspore_nn_layer_basic_Dense_construct_191:CNode_281{[0]: ValueNode<Primitive> Return, [1]: x}
+
+
+# ===============================================================================================
+# The total of function graphs in evaluation stack: 12/14 (Ignored 2 internal frames).
+# ===============================================================================================
+
+
+# ===============================================================================================
+# The rest function graphs are the following:
+# ===============================================================================================
+No more function graphs.
+

@@ -71,6 +71,14 @@
   - 支持: 动态量化、静态量化、量化感知训练
 - `convert_model_format` - 模型格式转换配置
 
+### 🔍 代码评分器 (NEW!)
+
+- `lint_mindspore_code` - MindSpore 代码质量评分
+  - 4 个维度评分: 性能、兼容性、最佳实践、可维护性
+  - 26 条检查规则，自动发现问题并给出建议
+- `get_lint_rules` - 获取所有检查规则列表
+- `compare_code_snippets` - 对比两个代码片段的质量
+
 ### 📊 数据脚本
 
 - `scripts/update_model_list.py` - 更新官方模型 JSON
@@ -94,21 +102,28 @@ mindspore-tools-mcp/
 │
 ├── src/
 │   └── mindspore_tools_mcp/           # MCP 服务
-│       ├── server.py                  # MCP 入口
-│       ├── tools.py                   # 模型检索工具
-│       ├── msutils_tools.py           # 🆕 msutils MCP 工具封装
-│       ├── msutils/                   # 🆕 MindSpore 开发工具库
-│       │   ├── data/                  # 数据处理
-│       │   ├── train/                 # 训练工具
-│       │   ├── security/              # AI 安全
-│       │   ├── eval/                  # 评估指标
-│       │   ├── nlp/                   # NLP 工具
-│       │   ├── distributed/           # 分布式训练
-│       │   ├── deploy/                # 部署工具
-│       │   └── analysis/              # 分析可视化
-│       ├── resource.py                # 资源定义
-│       └── prompt.py                  # Prompt 注册
+│       ├── server.py                   # MCP 入口
+│       ├── tools.py                    # 模型检索工具
+│       ├── msutils_tools.py            # 🆕 msutils MCP 工具封装
+│       ├── linter_tools.py             # 🆕 代码评分器 MCP 封装
+│       ├── msutils/                    # 🆕 MindSpore 开发工具库
+│       │   ├── data/                   # 数据处理
+│       │   ├── train/                  # 训练工具
+│       │   ├── security/               # AI 安全
+│       │   ├── eval/                   # 评估指标
+│       │   ├── nlp/                    # NLP 工具
+│       │   ├── distributed/            # 分布式训练
+│       │   ├── deploy/                 # 部署工具
+│       │   └── analysis/               # 分析可视化
+│       └── linter/                     # 🆕 代码评分器核心
+│           ├── __init__.py
+│           ├── rules.py                 # 检查规则定义
+│           ├── checker.py               # 检查逻辑
+│           └── formatter.py             # 报告格式化
+│       ├── resource.py                 # 资源定义
+│       └── prompt.py                   # Prompt 注册
 │
+├── examples/                          # 🆕 使用示例
 ├── tests/                             # 测试文件
 ├── pyproject.toml                     # 项目配置
 └── uv.lock                            # 依赖锁文件
@@ -204,6 +219,14 @@ uv run python -m mindspore_tools_mcp.server
 | `quantize_model` | 模型量化配置 | `quantize_model("dynamic", precision="int8")` |
 | `convert_model_format` | 模型格式转换 | `convert_model_format("pytorch", "mindspore")` |
 
+### 代码评分器 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `lint_mindspore_code` | 代码质量评分 | `lint_mindspore_code(code, level="all")` |
+| `get_lint_rules` | 获取检查规则 | `get_lint_rules(category="performance")` |
+| `compare_code_snippets` | 对比代码质量 | `compare_code_snippets(code_a, code_b)` |
+
 ### 资源列表
 
 | 资源名 | 说明 |
@@ -292,6 +315,28 @@ quantize_model("dynamic", precision="int8")
 quantize_model("static", precision="int8", calibration_dataset_size=100)
 ```
 
+### 代码评分器 🆕
+
+```python
+# 检查代码质量
+code = '''
+import mindspore as ms
+from mindspore import nn
+
+class Net(nn.Cell):
+    def __init__(self):
+        super().__init__()
+        self.conv = nn.Conv2d(3, 64, 3)
+'''
+
+result = lint_mindspore_code(code)
+# 返回: score=85, grade="B", dimensions={...}, issues=[...]
+
+# 对比两个代码
+compare_code_snippets(good_code, bad_code)
+# 返回: winner, score差异, 问题差异
+```
+
 ---
 
 ## 📊 msutils 模块说明
@@ -309,6 +354,41 @@ quantize_model("static", precision="int8", calibration_dataset_size=100)
 | `deploy/` | 模型转换、量化 | 3 | 315 |
 | `analysis/` | 复杂度分析、可视化 | 3 | 454 |
 | **总计** | | **25** | **5,664** |
+
+---
+
+## 🔍 代码评分器 (Linter)
+
+`linter` 模块提供 MindSpore 代码质量评分功能，帮助开发者发现代码问题并给出改进建议。
+
+### 评分维度
+
+| 维度 | 权重 | 说明 |
+|------|------|------|
+| ⚡ 性能 | 30% | 循环内创建对象、未使用混合精度等 |
+| 🔌 兼容性 | 25% | PyTorch API 使用、废弃 API、Ascend 优化 |
+| ✨ 最佳实践 | 25% | 随机种子、学习率调度、检查点、梯度裁剪 |
+| 🔧 可维护性 | 20% | 函数长度、代码重复、文档字符串 |
+
+### 检查规则
+
+| 类别 | 规则数 | 示例 |
+|------|--------|------|
+| 性能规则 | 6 | 循环内创建优化器、未启用 AMP |
+| 兼容性规则 | 5 | 使用 torch API、废弃 API |
+| 最佳实践 | 7 | 未设置种子、未使用检查点 |
+| 可维护性 | 5 | 函数过长、缺少文档 |
+| **总计** | **26** | |
+
+### 评分等级
+
+| 等级 | 分数范围 | 说明 |
+|------|---------|------|
+| A | 90-100 | 优秀，代码质量很高 |
+| B | 80-89 | 良好，有少量可改进之处 |
+| C | 70-79 | 一般，建议优化 |
+| D | 60-69 | 较差，需要改进 |
+| F | 0-59 | 不合格，存在严重问题 |
 
 ---
 

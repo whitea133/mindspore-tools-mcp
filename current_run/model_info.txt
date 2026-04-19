@@ -1,0 +1,12 @@
+SimpleCNN CIFAR-10 模型信息
+========================================
+
+模型路径: current_run\simplecnn_best.ckpt
+类别数: 10
+输入大小: (224, 224, 3)
+训练轮数: 50
+批次大小: 32
+学习率: 0.01
+
+后续可用于鲁棒性评估
+使用 MCP: evaluate_model_robustness() 测试

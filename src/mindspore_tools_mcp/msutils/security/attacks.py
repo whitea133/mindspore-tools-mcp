@@ -185,9 +185,9 @@ class PGD(Attack):
     
     def _compute_gradient(self, x, y):
         """计算损失梯度"""
-        from mindspore.nn import CrossEntropyWithSoftmax
+        from mindspore.nn import SoftmaxCrossEntropyWithLogits
         output = self.model(x)
-        criterion = CrossEntropyWithSoftmax(sparse=True)
+        criterion = SoftmaxCrossEntropyWithLogits(sparse=True)
         return criterion(output, y)
 
 
@@ -244,9 +244,9 @@ class BIM(Attack):
     
     def _compute_loss(self, x, y):
         """计算损失"""
-        from mindspore.nn import CrossEntropyWithSoftmax
+        from mindspore.nn import SoftmaxCrossEntropyWithLogits
         output = self.model(x)
-        criterion = CrossEntropyWithSoftmax(sparse=True)
+        criterion = SoftmaxCrossEntropyWithLogits(sparse=True)
         return criterion(output, y)
 
 

@@ -10,6 +10,7 @@ from mindspore_tools_mcp import prompt as prompt_module
 from mindspore_tools_mcp import resource as resource_module
 from mindspore_tools_mcp import tools
 from mindspore_tools_mcp import msutils_tools  # 新增: msutils 工具封装
+from mindspore_tools_mcp import linter_tools  # 新增: 代码评分器
 
 
 def register_module_functions(mcp: FastMCP, module) -> None:
@@ -66,6 +67,9 @@ def create_server() -> FastMCP:
     # auto register msutils tools (AI安全、数据处理、训练工具等)
     register_module_functions(mcp, msutils_tools)
     
+    # auto register linter tools (代码评分器)
+    register_module_functions(mcp, linter_tools)
+    
     # auto register resources and prompts
     register_module_resources(mcp, resource_module)
     register_module_prompts(mcp, prompt_module)
@@ -75,7 +79,8 @@ def create_server() -> FastMCP:
 
 if __name__ == "__main__":
     print("Starting MindSpore Models MCP server...")
-    print("  - Model registry tools: list_models, recommend_models, compare_models...")
-    print("  - msutils tools: generate_adversarial_attack, evaluate_model_robustness...")
+    print("  - Model registry: list_models, recommend_models, compare_models...")
+    print("  - msutils tools: adversarial_attack, lr_scheduler, callbacks...")
+    print("  - Linter: lint_mindspore_code, get_lint_rules, compare_code_snippets...")
     server = create_server()
     server.run(transport="stdio")

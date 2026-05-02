@@ -79,6 +79,16 @@
 - `get_lint_rules` - 获取所有检查规则列表
 - `compare_code_snippets` - 对比两个代码片段的质量
 
+### 🚂 训练模板生成器 (NEW!)
+
+- `generate_training_template` - 一键生成完整训练脚本
+  - 支持: ResNet、LeNet、MobileNet 等模型
+  - 支持: CIFAR-10、CIFAR-100、ImageNet 数据集
+  - 支持: Ascend、GPU、CPU 硬件
+  - 包含: 数据加载、模型定义、训练配置、回调函数
+- `get_available_options` - 获取所有可用选项
+- `generate_quick_start` - 快速生成入门级训练脚本
+
 ### 📊 数据脚本
 
 - `scripts/update_model_list.py` - 更新官方模型 JSON
@@ -106,6 +116,7 @@ mindspore-tools-mcp/
 │       ├── tools.py                    # 模型检索工具
 │       ├── msutils_tools.py            # 🆕 msutils MCP 工具封装
 │       ├── linter_tools.py             # 🆕 代码评分器 MCP 封装
+│       ├── template_tools.py           # 🆕 训练模板生成器封装
 │       ├── msutils/                    # 🆕 MindSpore 开发工具库
 │       │   ├── data/                   # 数据处理
 │       │   ├── train/                  # 训练工具
@@ -115,12 +126,19 @@ mindspore-tools-mcp/
 │       │   ├── distributed/            # 分布式训练
 │       │   ├── deploy/                 # 部署工具
 │       │   └── analysis/               # 分析可视化
-│       └── linter/                     # 🆕 代码评分器核心
-│           ├── __init__.py
-│           ├── rules.py                 # 检查规则定义
-│           ├── checker.py               # 检查逻辑
-│           └── formatter.py             # 报告格式化
-│       ├── resource.py                 # 资源定义
+│       ├── linter/                     # 🆕 代码评分器核心
+│       │   ├── __init__.py
+│       │   ├── rules.py                 # 检查规则定义
+│       │   ├── checker.py               # 检查逻辑
+│       │   └── formatter.py             # 报告格式化
+│       ├── templates/                  # 🆕 训练模板生成器
+│       │   ├── __init__.py
+│       │   └── generator.py             # 模板生成逻辑
+│       ├── api_examples/                 # 🆕 API 示例生成器
+│       │   ├── __init__.py              # 核心查询逻辑
+│       │   ├── registry.py              # API 注册表（34个API）
+│       │   └── searcher.py              # 搜索逻辑
+│       ├── resource.py                   # 资源定义
 │       └── prompt.py                   # Prompt 注册
 │
 ├── examples/                          # 🆕 使用示例
@@ -227,6 +245,24 @@ uv run python -m mindspore_tools_mcp.server
 | `get_lint_rules` | 获取检查规则 | `get_lint_rules(category="performance")` |
 | `compare_code_snippets` | 对比代码质量 | `compare_code_snippets(code_a, code_b)` |
 
+### 训练模板生成器 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `generate_training_template` | 生成训练脚本 | `generate_training_template(model="resnet50")` |
+| `get_available_options` | 获取可用选项 | `get_available_options()` |
+| `generate_quick_start` | 快速入门脚本 | `generate_quick_start("beginner")` |
+
+### API 示例生成器 🆕
+
+| 工具名 | 说明 | 示例 |
+|--------|------|------|
+| `get_api_examples` | 获取 API 完整示例 | `get_api_examples("nn.Conv2d")` |
+| `search_apis` | 搜索相关 API | `search_apis("卷积")` |
+| `list_api_categories` | 列出所有 API 分类 | `list_api_categories()` |
+| `get_related_apis` | 获取相关 API 列表 | `get_related_apis("nn.Conv2d")` |
+| `get_quick_reference` | 快速 API 参考（简洁版） | `get_quick_reference("nn.Conv2d")` |
+
 ### 资源列表
 
 | 资源名 | 说明 |
@@ -319,16 +355,6 @@ quantize_model("static", precision="int8", calibration_dataset_size=100)
 
 ```python
 # 检查代码质量
-code = '''
-import mindspore as ms
-from mindspore import nn
-
-class Net(nn.Cell):
-    def __init__(self):
-        super().__init__()
-        self.conv = nn.Conv2d(3, 64, 3)
-'''
-
 result = lint_mindspore_code(code)
 # 返回: score=85, grade="B", dimensions={...}, issues=[...]
 
@@ -337,9 +363,51 @@ compare_code_snippets(good_code, bad_code)
 # 返回: winner, score差异, 问题差异
 ```
 
+### 训练模板生成器 🆕
+
+```python
+# 生成完整训练脚本
+result = generate_training_template(
+    task="image_classification",
+    model="resnet50",
+    dataset="cifar10",
+    hardware="Ascend"
+)
+# 返回: script, filename, config
+# 保存到文件后即可运行
+
+# 快速入门
+result = generate_quick_start("beginner")
+# 生成适合新手的简单训练脚本
+```
+
+### API 示例生成器 🆕
+
+```python
+# 获取 API 完整示例
+get_api_examples("nn.Conv2d")
+# 返回: 描述、签名、参数说明、多个示例代码、相关 API、官方文档链接
+
+# 搜索相关 API
+search_apis("卷积")
+# 返回: nn.Conv2d, nn.Conv1d, nn.Conv3d, nn.Conv2dTranspose 等
+
+# 列出所有 API 分类
+list_api_categories()
+# 返回: 神经网络层(11)、损失函数(3)、优化器(3)、数据处理(2)等
+
+# 获取相关 API
+get_related_apis("nn.Conv2d")
+# 返回: nn.Conv1d, nn.Conv3d, nn.Dense, nn.BatchNorm2d
+
+# 快速参考（简洁版）
+get_quick_reference("nn.Conv2d")
+# 返回: 描述 + 签名 + 一个基础示例
+```
+
 ---
 
-## 📊 msutils 模块说明
+## 📚 API 示例生成器模块 (api_examples)
 
 `msutils` 是集成在项目中的 MindSpore 开发工具库，包含以下模块：
 
@@ -389,6 +457,37 @@ compare_code_snippets(good_code, bad_code)
 | C | 70-79 | 一般，建议优化 |
 | D | 60-69 | 较差，需要改进 |
 | F | 0-59 | 不合格，存在严重问题 |
+
+---
+
+## 📚 API 示例生成器模块 (api_examples)
+
+`api_examples` 模块提供 MindSpore 常用 API 的示例代码和使用说明，帮助开发者快速学习和使用 MindSpore。
+
+### 支持的 API 分类
+
+| 分类 | 数量 | 示例 API |
+|------|------|---------|
+| 神经网络层 (nn) | 11 | Conv2d, BatchNorm2d, Dense, ReLU, LSTM, Embedding |
+| 损失函数 (loss) | 3 | CrossEntropyLoss, BCEWithLogitsLoss, MSELoss |
+| 优化器 (optim) | 3 | Adam, AdamW, SGD |
+| 数据处理 (dataset) | 2 | MnistDataset, CIFAR-10 |
+| 训练 (train) | 3 | Model, TrainOneStepCell, DynamicLossScaleUpdateCell |
+| 学习率调度 (lr) | 2 | cosine_decay_lr, step_lr |
+| 回调函数 (callbacks) | 3 | Callback, TimeMonitor, ModelCheckpoint |
+| 网络单元 (cell) | 2 | Cell, SequentialCell |
+| 模型加载保存 (common) | 2 | load_checkpoint, save_checkpoint |
+| 算子 (ops) | 3 | cat, stack, Reshape |
+| 分布式训练 (distributed) | 1 | DistributedSampler |
+| **总计** | **34** | |
+
+### 特色功能
+
+- **精确匹配**: 输入 `nn.Conv2d` 返回完整信息
+- **模糊搜索**: 输入 `卷积` 自动匹配所有相关 API
+- **多示例**: 每个 API 提供 1-3 个使用示例
+- **相关 API**: 自动关联相关模块（如 Conv2d → BatchNorm2d）
+- **官方文档**: 每个 API 提供官方文档链接
 
 ---
 

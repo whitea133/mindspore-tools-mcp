@@ -11,6 +11,8 @@ from mindspore_tools_mcp import resource as resource_module
 from mindspore_tools_mcp import tools
 from mindspore_tools_mcp import msutils_tools  # 新增: msutils 工具封装
 from mindspore_tools_mcp import linter_tools  # 新增: 代码评分器
+from mindspore_tools_mcp import template_tools  # 新增: 训练模板生成器
+from mindspore_tools_mcp import api_tools  # 新增: API 示例生成器
 
 
 def register_module_functions(mcp: FastMCP, module) -> None:
@@ -70,6 +72,12 @@ def create_server() -> FastMCP:
     # auto register linter tools (代码评分器)
     register_module_functions(mcp, linter_tools)
     
+    # auto register template tools (训练模板生成器)
+    register_module_functions(mcp, template_tools)
+    
+    # auto register api_examples tools (API 示例生成器)
+    register_module_functions(mcp, api_tools)
+    
     # auto register resources and prompts
     register_module_resources(mcp, resource_module)
     register_module_prompts(mcp, prompt_module)
@@ -82,5 +90,7 @@ if __name__ == "__main__":
     print("  - Model registry: list_models, recommend_models, compare_models...")
     print("  - msutils tools: adversarial_attack, lr_scheduler, callbacks...")
     print("  - Linter: lint_mindspore_code, get_lint_rules, compare_code_snippets...")
+    print("  - Templates: generate_training_template, get_available_options...")
+    print("  - API Examples: get_api_examples, search_apis, list_api_categories, get_related_apis, get_quick_reference")
     server = create_server()
     server.run(transport="stdio")

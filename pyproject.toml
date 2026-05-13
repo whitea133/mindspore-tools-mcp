@@ -1,20 +1,20 @@
 [project]
 name = "mindspore-tools-mcp"
-version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.11"
+version = "1.0.0"
+description = "MindSpore Tools MCP - 基于 MCP 协议的 MindSpore 开发工具集（模型检索、API 映射、代码评分、训练模板）"
+readme = "README_CN.md"
+requires-python = ">=3.8"
 dependencies = [
     "beautifulsoup4>=4.14.2",
     "lxml>=6.0.2",
     "mcp[cli]>=1.21.2",
     "requests>=2.32.5",
 ]
-authors = [                      
+authors = [
     { name = "whitea133", email = "1309848726@qq.com" },
 ]
 
-[build-system]  
+[build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 

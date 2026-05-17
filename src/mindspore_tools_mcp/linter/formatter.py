@@ -180,7 +180,18 @@ def _format_simple(result: dict) -> str:
 def _format_json(result: dict) -> str:
     """格式化为 JSON"""
     import json
-    return json.dumps(result, ensure_ascii=False, indent=2)
+    from dataclasses import asdict, is_dataclass
+
+    def _convert(obj):
+        if is_dataclass(obj) and not isinstance(obj, type):
+            return asdict(obj)
+        if isinstance(obj, list):
+            return [_convert(i) for i in obj]
+        if isinstance(obj, dict):
+            return {k: _convert(v) for k, v in obj.items()}
+        return obj
+
+    return json.dumps(_convert(result), ensure_ascii=False, indent=2)
 
 
 def _format_markdown(result: dict) -> str:

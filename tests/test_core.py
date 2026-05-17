@@ -154,13 +154,10 @@ class TestLinterTools(unittest.TestCase):
         self.assertIn("score", r)
 
     def test_lint_style_json(self):
-        """JSON output style (may fail if Issue objects not serializable)"""
-        try:
-            r = lint_mindspore_code("x=1", style="json")
-            self.assertIsInstance(r, dict)
-        except TypeError:
-            # Known issue: Issue object not JSON serializable in json style
-            pass
+        """JSON output style"""
+        r = lint_mindspore_code("x=1", style="json")
+        self.assertIsInstance(r, dict)
+        self.assertIn("formatted_report", r)
 
     def test_lint_style_markdown(self):
         r = lint_mindspore_code("x=1", style="markdown")
